@@ -704,4 +704,25 @@
           (finish-output))
         (count (= v (5ify i)))))
 
+;;; Problem 21
+
+(defun amicable-d (n)
+  (iter (for i from 1 below n)
+        (when (dividesp n i)
+          (sum i))))
+
+(defun problem-21 (&optional (n 10000))
+  (iter 
+    (with found = (make-hash-table))
+    (for i from 1 below n)
+    (unless (gethash i found)
+      (let ((p (amicable-d i)))
+        (when (and (/= p i)
+                   (= i (amicable-d p)))
+          (format t "Found ~A-~A~%" i p)
+          (setf (gethash i found) t
+                (gethash p found) t)
+          (sum i)
+          (sum p))))))
+
 ;;; EOF
