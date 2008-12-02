@@ -27,9 +27,9 @@
   (loop
      for i from 99 to 999
      nconcing (loop
-		 for j from i to 999
-		 when (3-digit-palindrom-p (* i j))
-		 collect (* i j))))
+                 for j from i to 999
+                 when (3-digit-palindrom-p (* i j))
+                 collect (* i j))))
 
 
 
@@ -37,31 +37,31 @@
 
 (defun problem-5 ()
   (reduce #'lcm (loop for i from 2 to 20
-		   collect i)))
+                   collect i)))
 
 ;;; Problem 6
 
 (defun problem-6 ()
   (iter (for i from 1 to 100)
-	(sum i into normal-sum)
-	(sum (* i i) into squared-sum)
-	(finally (return (- (expt normal-sum 2) squared-sum)))))
+        (sum i into normal-sum)
+        (sum (* i i) into squared-sum)
+        (finally (return (- (expt normal-sum 2) squared-sum)))))
 
 ;;; Problem 7
 
 (defun nth-prime (n)
   (assert (> n 0))
   (iter (with primes = nil)
-	(with found = 0)
-	(for candidate upfrom 2)
-	(when (notany (lambda (p)
-			(dividesp candidate p))
-		      primes)
-	  (when (= (incf found) n)
-	    (return candidate))
-	  (push candidate primes)
-	  (unless (= candidate 2)
-	    (incf candidate)))))
+        (with found = 0)
+        (for candidate upfrom 2)
+        (when (notany (lambda (p)
+                        (dividesp candidate p))
+                      primes)
+          (when (= (incf found) n)
+            (return candidate))
+          (push candidate primes)
+          (unless (= candidate 2)
+            (incf candidate)))))
 
 (defun problem-7 ()
   (nth-prime 10001))
@@ -93,21 +93,21 @@
 (defun problem-8 ()
   (let ((digits (remove-if-not #'digit-char-p *problem-8-digits*)))
     (iter (for pos from 0 to (- (length digits) 5))
-	  (maximizing (iter (for i from pos to (+ pos 4))
-			    (multiply (digit-char-p (char digits i))))))))
+          (maximizing (iter (for i from pos to (+ pos 4))
+                            (multiply (digit-char-p (char digits i))))))))
 
 ;;; Problem 9
 
 (defun problem-9 ()
   (iter (for c upfrom 1)
-	(iter (for b from 1 below c)
-	      (iter (for a from 1 below b)
-		    (when (and (= (* c c)
-				  (+ (* a a)
-				     (* b b)))
-			       (= 1000 (+ a b c)))
-		      (return-from problem-9
-			(* a b c)))))))
+        (iter (for b from 1 below c)
+              (iter (for a from 1 below b)
+                    (when (and (= (* c c)
+                                  (+ (* a a)
+                                     (* b b)))
+                               (= 1000 (+ a b c)))
+                      (return-from problem-9
+                        (* a b c)))))))
 
 ;;; Problem 10
 
@@ -116,10 +116,10 @@
 (defun problem-10 ()
   (let ((sum 0))
     (map-primes (lambda (p)
-		  (when (>= p 1000000)
-		    (return-from problem-10
-		      sum))
-		  (incf sum p)))))
+                  (when (>= p 1000000)
+                    (return-from problem-10
+                      sum))
+                  (incf sum p)))))
 
 ;;; Problem 11
 
@@ -148,53 +148,53 @@
 (defun problem-11-array ()
   (with-input-from-string (in *problem-11-numbers*)
     (iter (with array = (make-array '(20 20)))
-	  (for x from 0 to (1- (array-total-size array)))
-	  (setf (row-major-aref array x) (read in))
-	  (finally (return array)))))
+          (for x from 0 to (1- (array-total-size array)))
+          (setf (row-major-aref array x) (read in))
+          (finally (return array)))))
 
 (defun problem-11 ()
   (let ((array (problem-11-array)))
     (iter (for x from 0 to 19)
-	  (maximize (iter (for y from 0 to 19)
-			  (when (<= x 16)
-			    (maximize (iter (for i from x to (+ x 3))
-					    (multiply (aref array i y))))
-			    (when (<= y 16)
-			      (maximize (iter (for i from 0 to 3)
-					      (multiply (aref array
-							      (+ x i)
-							      (+ y i)))))))
-			  (when (<= y 16)
-			    (maximize (iter (for i from y to (+ y 3))
-					    (multiply (aref array x i))))
-			    (when (>= x 3)
-			      (maximize (iter (for i from 0 to 3)
-					      (multiply (aref array
-							      (- x i)
-							      (+ y i))))))
-			    )
-			  )))))
+          (maximize (iter (for y from 0 to 19)
+                          (when (<= x 16)
+                            (maximize (iter (for i from x to (+ x 3))
+                                            (multiply (aref array i y))))
+                            (when (<= y 16)
+                              (maximize (iter (for i from 0 to 3)
+                                              (multiply (aref array
+                                                              (+ x i)
+                                                              (+ y i)))))))
+                          (when (<= y 16)
+                            (maximize (iter (for i from y to (+ y 3))
+                                            (multiply (aref array x i))))
+                            (when (>= x 3)
+                              (maximize (iter (for i from 0 to 3)
+                                              (multiply (aref array
+                                                              (- x i)
+                                                              (+ y i))))))
+                            )
+                          )))))
 
 ;;; Problem 12
 
 (defun count-divisors (n)
   (let ((divisors 1))
     (map-primes (lambda (p)
-		  (iter (for (values quot rem) = (truncate n p))
-			(while (zerop rem))
-			(sum 1 into power)
-			(setf n quot)
-			(finally (setf divisors (* divisors (1+ power)))))
-		  (when (= n 1)
-		    (return-from count-divisors
-		      divisors))))))
+                  (iter (for (values quot rem) = (truncate n p))
+                        (while (zerop rem))
+                        (sum 1 into power)
+                        (setf n quot)
+                        (finally (setf divisors (* divisors (1+ power)))))
+                  (when (= n 1)
+                    (return-from count-divisors
+                      divisors))))))
 
 ;;; XXX Not submitted
 (defun problem-12 ()
   (iter (for i upfrom 1)
-	(sum i into triangle-num)
-	(for divisors = (count-divisors triangle-num))
-	(finding triangle-num such-that (> divisors 500))))
+        (sum i into triangle-num)
+        (for divisors = (count-divisors triangle-num))
+        (finding triangle-num such-that (> divisors 500))))
 
 ;;; Problem 13
 
@@ -302,11 +302,11 @@
 (defun problem-13 ()
   (with-input-from-string (in *problem-13-numbers*)
     (iter (with sum = (iter (for number = (read in nil nil))
-			     (while number)
-			     (sum number)))
-	  (while (>= sum (expt 10 10)))
-	  (setf sum (truncate sum 10))
-	  (finally (return sum)))))
+                             (while number)
+                             (sum number)))
+          (while (>= sum (expt 10 10)))
+          (setf sum (truncate sum 10))
+          (finally (return sum)))))
 
 
 
@@ -316,36 +316,36 @@
   (if (= n 1)
       (+ acc 1)
       (collatz-length (if (evenp n)
-			  (ash n -1)
-			  (1+ (* 3 n)))
-		      (1+ acc))))
+                          (ash n -1)
+                          (1+ (* 3 n)))
+                      (1+ acc))))
 
 
 (defun problem-14 ()
   (iter (for i from 999999 downto 1)
-	(finding i maximizing (collatz-length i))))
+        (finding i maximizing (collatz-length i))))
 
 
 ;;; Problem 15
 
 (defun grid-routes (n)
   (declare (optimize speed)
-	   (type (unsigned-byte 10) n))
+           (type (unsigned-byte 10) n))
   (let ((cache (make-hash-table :size (expt (1+ n) 2))))
     (labels ((get-cache (x y)
-	       (gethash (logior x (ash y 10)) cache))
-	     (set-cache (x y val)
-	       (setf (gethash (logior x (ash y 10)) cache)
-		     val))
-	     (rec (x y)
-	       (declare (type (unsigned-byte 10) x y))
-	       (if (or (= x n)
-		       (= y n))
-		   1
-		   (or (get-cache x y)
-		       (set-cache x y
-				  (+ (rec (1+ x) y)
-				     (rec x (1+ y))))))))
+               (gethash (logior x (ash y 10)) cache))
+             (set-cache (x y val)
+               (setf (gethash (logior x (ash y 10)) cache)
+                     val))
+             (rec (x y)
+               (declare (type (unsigned-byte 10) x y))
+               (if (or (= x n)
+                       (= y n))
+                   1
+                   (or (get-cache x y)
+                       (set-cache x y
+                                  (+ (rec (1+ x) y)
+                                     (rec x (1+ y))))))))
       (rec 0 0))))
 
 
@@ -356,21 +356,21 @@
 
 (defun problem-16 ()
   (iter (with n = (expt 2 1000))
-	(for (values div mod) initially (values n 0)
-	     then (truncate div 10))
-	(sum mod)
-	(while (> div 0))))
+        (for (values div mod) initially (values n 0)
+             then (truncate div 10))
+        (sum mod)
+        (while (> div 0))))
 
 ;;; Slightly cheating version:
 ; (reduce #'+ (map 'list 'digit-char-p (format nil "~A" (expt 2 1000))))
 
 (defun problem-17 ()
   (length (remove-if (lambda (c)
-		       (or (char= c #\Space)
-			   (char= c #\-)))
-		     (with-output-to-string (out)
-		       (iter (for i from 1 to 1000)
-			     (format out "~R" i))))))
+                       (or (char= c #\Space)
+                           (char= c #\-)))
+                     (with-output-to-string (out)
+                       (iter (for i from 1 to 1000)
+                             (format out "~R" i))))))
 
 ;;; Problem 18
 
@@ -385,85 +385,85 @@
 (defun parse-number-triangle (file)
   (with-open-file (in file)
     (iter (with triangle-array = (make-array 0
-					     :adjustable t
-					     :fill-pointer t))
+                                             :adjustable t
+                                             :fill-pointer t))
       (for number = (read in nil nil))
-	  (until (null number))
-	  (vector-push-extend number triangle-array)
-	  (finally (return triangle-array)))))
+          (until (null number))
+          (vector-push-extend number triangle-array)
+          (finally (return triangle-array)))))
 
 (defun listify-triangle (triangle)
   (coerce
    (iter outer
-	 (for l from 1)
-	 (generating t-pos from 0)
-	 (unless (< (1+ t-pos) (length triangle))
-	   (finish))
-	 (collect (coerce (iter (repeat l)
-				(collect (aref triangle (in outer (next t-pos)))))
-			  'vector)))
+         (for l from 1)
+         (generating t-pos from 0)
+         (unless (< (1+ t-pos) (length triangle))
+           (finish))
+         (collect (coerce (iter (repeat l)
+                                (collect (aref triangle (in outer (next t-pos)))))
+                          'vector)))
    'vector))
 
 (defun triangle-brute-force (triangle)
   (let* ((listified (listify-triangle triangle))
-	 (levels (length listified)))
+         (levels (length listified)))
     (labels ((left (pos) pos)
-	     (right (pos) (1+ pos))
-	     (leafp (level)
-	       (>= (1+ level) levels))
-	     (val (level pos)
-	       (aref (aref listified level) pos))
-	     (max-down (l p)
-	       (+ (val l p)
-		  (if (leafp l)
-		      0
-		      (max (max-down (1+ l) (left p))
-			   (max-down (1+ l) (right p)))))))
+             (right (pos) (1+ pos))
+             (leafp (level)
+               (>= (1+ level) levels))
+             (val (level pos)
+               (aref (aref listified level) pos))
+             (max-down (l p)
+               (+ (val l p)
+                  (if (leafp l)
+                      0
+                      (max (max-down (1+ l) (left p))
+                           (max-down (1+ l) (right p)))))))
       (max-down 0 0))))
 
 (defun triangle-cut-off-1 (triangle)
   (declare (optimize (speed 3) (safety 0) (debug 0)))
   (let* ((listified (listify-triangle triangle))
-	 (largest-single-value (iter (for el in-vector triangle)
-				     (maximize el)))
-	 (levels (length listified))
-	 (max-so-far -1))
+         (largest-single-value (iter (for el in-vector triangle)
+                                     (maximize el)))
+         (levels (length listified))
+         (max-so-far -1))
     (declare (type (integer -1 100000))
-	     (type (integer 0 100) largest-single-value)
-	     (type (integer 0 1000) levels))
+             (type (integer 0 100) largest-single-value)
+             (type (integer 0 1000) levels))
     (labels ((left (pos) pos)
-	     (right (pos) (1+ pos))
-	     (leafp (level)
-	       (>= (1+ level) levels))
-	     (val (level pos)
-	       (the (integer 0 1000) (svref (svref listified level) pos)))
-	     (max-possible (l)
-	       (* largest-single-value (- levels l)))
-	     (max-down (l p acc)
-	       (declare (type (integer 0 1000) l p)
-			(type (integer 0 100000) acc))
+             (right (pos) (1+ pos))
+             (leafp (level)
+               (>= (1+ level) levels))
+             (val (level pos)
+               (the (integer 0 1000) (svref (svref listified level) pos)))
+             (max-possible (l)
+               (* largest-single-value (- levels l)))
+             (max-down (l p acc)
+               (declare (type (integer 0 1000) l p)
+                        (type (integer 0 100000) acc))
 
-	       (if (leafp l)
-		   (let ((old max-so-far))
-		     (declare (type fixnum old max-so-far))
-		     (setq max-so-far (max max-so-far
-					   (+ acc (val l p))))
-		     (when (> max-so-far old)
-		       (format t "~&~A~%" max-so-far)))
-		   (let ((new-acc (+ acc (val l p)))
-			 (nl (1+ l)))
-		     (when (< (+ new-acc (max-possible nl))
-			      max-so-far)
-		       (return-from max-down))
-		     (if (> (val nl (left p))
-			    (val nl (right p)))
-			 (progn
-			   (max-down (1+ l) (left p) new-acc)
-			   (max-down (1+ l) (right p) new-acc))
-			 (progn
-			   (max-down (1+ l) (right p) new-acc)
-			   (max-down (1+ l) (left p) new-acc))
-			 )))))
+               (if (leafp l)
+                   (let ((old max-so-far))
+                     (declare (type fixnum old max-so-far))
+                     (setq max-so-far (max max-so-far
+                                           (+ acc (val l p))))
+                     (when (> max-so-far old)
+                       (format t "~&~A~%" max-so-far)))
+                   (let ((new-acc (+ acc (val l p)))
+                         (nl (1+ l)))
+                     (when (< (+ new-acc (max-possible nl))
+                              max-so-far)
+                       (return-from max-down))
+                     (if (> (val nl (left p))
+                            (val nl (right p)))
+                         (progn
+                           (max-down (1+ l) (left p) new-acc)
+                           (max-down (1+ l) (right p) new-acc))
+                         (progn
+                           (max-down (1+ l) (right p) new-acc)
+                           (max-down (1+ l) (left p) new-acc))
+                         )))))
       (declare (inline left right val max-possible))
       (max-down 0 0 0)
       max-so-far)))
@@ -471,42 +471,42 @@
 
 (defun triangle-bottum-up (triangle)
   (let* ((listified (listify-triangle triangle))
-	 (levels (length listified))
-	 (cache (listify-triangle (make-array (length triangle) :initial-element nil))))
+         (levels (length listified))
+         (cache (listify-triangle (make-array (length triangle) :initial-element nil))))
     (labels ((max-up-cached (l p)
-	       (if (or (>= p (+ l 1))
-		       (< p 0))
-		   0
-		   (let ((line (svref cache l)))
-		     (or (svref line p)
-			 (setf (svref line p) (max-up l p))))))
-	     (val (l p)
-	       (if (or (>= p (+ l 1))
-		       (< p 0))
-		   0
-		   (svref (svref listified l) p)))
-	     (max-up (l p)
-	       (+ (val l p)
-		  (if (zerop l)
-		      0
-		      (if (> (val (1- l) (1- p))
-			     (val (1- l) p))
-			  (max
-			   (max-up-cached (1- l) (1- p))
-			   (max-up-cached (1- l) p))
-			  (max
-			   (max-up-cached (1- l) p)
-			   (max-up-cached (1- l) (1- p))))))))
+               (if (or (>= p (+ l 1))
+                       (< p 0))
+                   0
+                   (let ((line (svref cache l)))
+                     (or (svref line p)
+                         (setf (svref line p) (max-up l p))))))
+             (val (l p)
+               (if (or (>= p (+ l 1))
+                       (< p 0))
+                   0
+                   (svref (svref listified l) p)))
+             (max-up (l p)
+               (+ (val l p)
+                  (if (zerop l)
+                      0
+                      (if (> (val (1- l) (1- p))
+                             (val (1- l) p))
+                          (max
+                           (max-up-cached (1- l) (1- p))
+                           (max-up-cached (1- l) p))
+                          (max
+                           (max-up-cached (1- l) p)
+                           (max-up-cached (1- l) (1- p))))))))
       (let ((positions-from-greatest
-	     (mapcar #'car
-		     (sort (iter (for el in-vector (svref listified (1- levels)))
-				 (for pos upfrom 0)
-				 (collect (cons pos el)))
-			   #'>
-			   :key #'cdr))))
-	(iter (for next-pos in positions-from-greatest)
-	      (for i upfrom 0)
-	      (maximizing (max-up-cached (1- (length listified)) next-pos)))))))
+             (mapcar #'car
+                     (sort (iter (for el in-vector (svref listified (1- levels)))
+                                 (for pos upfrom 0)
+                                 (collect (cons pos el)))
+                           #'>
+                           :key #'cdr))))
+        (iter (for next-pos in positions-from-greatest)
+              (for i upfrom 0)
+              (maximizing (max-up-cached (1- (length listified)) next-pos)))))))
 
 ;;; Problem 20
 
@@ -519,29 +519,29 @@
 (defun name-value (name position)
   (* position
      (iter (for char in-vector name)
-	   (sum (1+ (- (char-code char) (char-code #\A)))))))
+           (sum (1+ (- (char-code char) (char-code #\A)))))))
 
 (defun problem-22 ()
   (let ((names (with-open-file (in (package-data-file "names.txt"))
-		 (iter (for name = (read in nil nil))
-		       (while name)
-		       (collect name)
-		       (while (read-char in nil nil))))))
+                 (iter (for name = (read in nil nil))
+                       (while name)
+                       (collect name)
+                       (while (read-char in nil nil))))))
     (setf names (sort names #'string<=))
     (iter (for pos upfrom 1)
-	  (for name in names)
-	  (sum (name-value name pos)))))
+          (for name in names)
+          (sum (name-value name pos)))))
 
 ;;; Problem 24
 
 (defun problem-24 ()
   (let ((count 0))
     (map-permutations '(0 1 2 3 4 5 6 7 8 9)
-		      (lambda (perm)
-			(incf count)
-			(when (= count 1000000)
-			  (return-from problem-24
-			    (funcall perm)))))))
+                      (lambda (perm)
+                        (incf count)
+                        (when (= count 1000000)
+                          (return-from problem-24
+                            (funcall perm)))))))
 
 ;;; Problem 25
 
@@ -551,28 +551,28 @@
      (lambda (n)
        (incf count)
        (when (> (log n 10) 999)
-	 (return-from problem-25
-	   count))))))
+         (return-from problem-25
+           count))))))
 
 ;;; Problem 36
 
 (defun problem-36 ()
   (iter (for n from 1 to 1000000)
-	(if (and (palindromp (let ((*print-base* 2))
-			       (format nil "~A" n)))
-		 (palindromp (let ((*print-base* 10))
-			       (format nil "~A" n))))
-	    (sum n))))
+        (if (and (palindromp (let ((*print-base* 2))
+                               (format nil "~A" n)))
+                 (palindromp (let ((*print-base* 10))
+                               (format nil "~A" n))))
+            (sum n))))
 
 ;;; Problem 48
 
 (defun problem-48 ()
   (iter (with modulo = (expt 10 10))
-	(for i from 1 to 1000)
-	(for m 
-	     initially 0
-	     then (mod (+ m (exptmod i i modulo)) modulo))
-	(finally (return m))))
+        (for i from 1 to 1000)
+        (for m
+             initially 0
+             then (mod (+ m (exptmod i i modulo)) modulo))
+        (finally (return m))))
 
 ;;; Problem 57
 
@@ -581,10 +581,10 @@
 
 (defun problem-57 ()
   (iter (repeat 1000)
-	(for i initially 1/2 then (/ (+ 2 i)))
-	(for approx-root = (1+ i))
-	(count (> (digits (numerator approx-root))
-		  (digits (denominator approx-root))))))
+        (for i initially 1/2 then (/ (+ 2 i)))
+        (for approx-root = (1+ i))
+        (count (> (digits (numerator approx-root))
+                  (digits (denominator approx-root))))))
 
 ;;; Problem 79
 
@@ -605,7 +605,7 @@
 
 (defun problem-79 ()
   (iter (for n upfrom 4)
-	(finding n such-that (try-for-size *problem-79-numbers* n))))
+        (finding n such-that (try-for-size *problem-79-numbers* n))))
 
 ;;; Problem 160
 
@@ -613,28 +613,28 @@
   (declare (type (integer 0 1000000000000) n)
            (optimize (speed 3)))
   (loop (multiple-value-bind (div rem)
-	    (truncate n 10)
-	  (if (zerop rem)
-	      (setf n div)
-	      (return-from 5ify
+            (truncate n 10)
+          (if (zerop rem)
+              (setf n div)
+              (return-from 5ify
                 ;; Changing that to 1000000, changes the global
                 ;; solution which indicates major b0rkage... :-/
-		(mod n 10000))))))
+                (mod n 10000))))))
 
 (defun 5sqrmult (n p)
   (if (= p 1)
       (5ify n)
       (if (evenp p)
-	  (5sqrmult (5ify (* n n))
-		    (ash p -1))
-	  (5ify (* n (5sqrmult n (1- p)))))))
+          (5sqrmult (5ify (* n n))
+                    (ash p -1))
+          (5ify (* n (5sqrmult n (1- p)))))))
 
 (defun ! (n)
   (iter (for i from 1 to n)
-	(multiply i)))
+        (multiply i)))
 
 (defun exists-ntimes (v)
-  (cond ((= v 1) 
+  (cond ((= v 1)
          11111116)
         ((< v 10)
          11111115)
@@ -652,12 +652,12 @@
 (defun problem-160 ()
   (declare (optimize speed))
   (iter (with prod = 1)
-	(for i from 1 to 99999)
-	(unless (zerop (mod i 10))
-	  (setf prod (5ify (* prod
-			      (5sqrmult
-			       i (exists-ntimes i))))))
-	(finally (return prod))))
+        (for i from 1 to 99999)
+        (unless (zerop (mod i 10))
+          (setf prod (5ify (* prod
+                              (5sqrmult
+                               i (exists-ntimes i))))))
+        (finally (return prod))))
 
 (defun strip-zeroes (n)
   (declare (type unsigned-byte n)
@@ -682,8 +682,8 @@
           (force-output))
         (for fak = (mod (strip-zeroes i) (expt 10 10)))
         (declare (type (integer 0 #. (expt 10 10)) prod fak))
-        (setf prod (mod 
-                    (strip-zeroes (* prod fak)) 
+        (setf prod (mod
+                    (strip-zeroes (* prod fak))
                     (expt 10 10)))
         (finally (return prod))
 
@@ -696,7 +696,7 @@
         (when (zerop (logand i #xFFFFFF))
           (let* ((percent-done (* 100 (/ i n)))
                  (time-elapsed (- (get-universal-time) start))
-                 (time-remaining (* 100 (/ time-elapsed 
+                 (time-remaining (* 100 (/ time-elapsed
                                            percent-done))))
             (format t "~&~,2F% done, ~,2F hours remaining~%"
                     percent-done
@@ -712,7 +712,7 @@
           (sum i))))
 
 (defun problem-21 (&optional (n 10000))
-  (iter 
+  (iter
     (with found = (make-hash-table))
     (for i from 1 below n)
     (unless (gethash i found)
